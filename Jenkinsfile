@@ -4,23 +4,15 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    def imageName = "my-app:${BUILD_NUMBER}"
-                    sh "docker build -t ${imageName} ."
-                }
+                sh 'docker build -t my-app .'
             }
         }
         stage('Deploy') {
             steps {
-              script {
                 sh 'docker stop my-app || true'
                 sh 'docker rm my-app || true'
-               
-                def imageName = "my-app:${BUILD_NUMBER}"
-
-                sh "docker run -d --name my-app -p 80:80 ${imageName}"
-             }
-           }
-       }
+                sh 'docker run -d --name my-app -p 8081:80 my-app'
+            }
+        }
     }
 }
