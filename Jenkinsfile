@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                   dockerImage = docker.build("my-test-app:latest -f Dockerfile")
+                   dockerImage = docker.build("my-test-app:latest")
                    
                 }
             }
