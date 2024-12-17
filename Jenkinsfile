@@ -2,13 +2,13 @@ pipeline {
    agent any
     
   environment {
-    image_name = 'ваш_docker_hub/my-app'  //заменить имя вашего docker-хаб репозитория (если таковой имеется или изменить на ваш любой image_name, image: my_image )
-   context_folder = '.' //( или 'your-app' пример folder где лежит ваш Dockerfile относительно вашего репозитория)
+    image_name = 'test-app'
+   context_folder = '.'
   }
  stages {
   stage('Build image'){
     steps {
-    sh "docker build -t ${image_name}:latest --file ${context_folder}/Dockerfile ${context_folder}" // dockerfile в этойже папке (может быть внутри любой подпапки и измените путь при надобности)
+    sh "docker build -t ${image_name}:latest --file ${context_folder}/Dockerfile ${context_folder}"
     }
     }
       stage("Run Container") {
