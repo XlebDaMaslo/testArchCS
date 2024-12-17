@@ -5,7 +5,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("local/repository:${env.BUILD_NUMBER}")
+                    dockerImage = docker.build("local/python-app:${env.BUILD_NUMBER}")
                 }
             }
         }
@@ -14,17 +14,16 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker stop app-container || true
-                        docker rm app-container || true
+                        docker stop python-app-container || true
+                        docker rm python-app-container || true
                     '''
                     sh """
-                        docker run -d --name app-container -p 8181:8080 local/repository:${env.BUILD_NUMBER}
+                        docker run -d --name python-app-container -p 8000:5000 local/python-app:${env.BUILD_NUMBER}
                     """
                 }
             }
         }
     }
-
     post {
         always {
             cleanWs()

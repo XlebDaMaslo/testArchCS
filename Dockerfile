@@ -1,12 +1,10 @@
-FROM golang:1.16-alpine
+FROM python:3.9
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-RUN go mod download
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN go build -o main .
-
-CMD ["/app/main"]
+CMD ["python", "app.py"]
