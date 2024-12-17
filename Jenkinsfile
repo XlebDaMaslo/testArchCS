@@ -17,9 +17,9 @@ pipeline {
                         docker stop app-container || true
                         docker rm app-container || true
                     '''
-                    sh '''
+                    sh """
                         docker run -d --name app-container -p 8080:8080 local/repository:${env.BUILD_NUMBER}
-                    '''
+                    """
                 }
             }
         }
