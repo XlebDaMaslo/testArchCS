@@ -1,24 +1,33 @@
 pipeline {
-    agent {
-        docker { image 'docker' }
-    }
+    agent any
+
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("my-test-app:latest")
+                    dockerImage = docker.build("local/repository:${env.BUILD_NUMBER}")
                 }
             }
         }
+
         stage('Deploy') {
-          steps {
-              script {
-                 
-              sh 'docker stop my-app || true'
-              sh 'docker rm my-app || true'
-              sh 'docker run -d --name my-app -p 8081:80 my-test-app:${BUILD_NUMBER}'
-              }
-          }
-      }
+            steps {
+                script {
+                    sh '''
+                        docker stop app-container || true
+                        docker rm app-container || true
+                    '''
+                    sh '''
+                        docker run -d --name app-container -p 8080:8080 local/repository:${env.BUILD_NUMBER}
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
     }
 }
