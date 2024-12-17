@@ -18,7 +18,7 @@ pipeline {
                         docker rm app-container || true
                     '''
                     sh """
-                        docker run -d --name app-container -p 8080:8080 local/repository:${env.BUILD_NUMBER}
+                        docker run -d --name app-container -p 8181:8080 local/repository:${env.BUILD_NUMBER}
                     """
                 }
             }
